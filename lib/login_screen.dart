@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,8 +9,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,19 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () {
                 String email = _emailController.text.trim();
                 String password = _passwordController.text.trim();
+
+                print("Email: ${email}, pw: ${password}");
               },
               child: const Text('Log In'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignUpScreen())
+                );
+              },
+              child: const Text('Sign Up'),
             ),
           ],
         ),
