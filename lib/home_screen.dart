@@ -5,7 +5,7 @@ import 'weather_data.dart';
 import 'individual_city_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.title}) : super(key: key);
+  const HomeScreen({super.key, required this.title});
 
   final String title;
 
@@ -19,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch weather data for major US cities
     fetchWeatherData();
   }
 
@@ -30,14 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
       Uri url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city,US&appid=$apiKey');
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON.
         Map<String, dynamic> data = jsonDecode(response.body);
         WeatherData weatherData = WeatherData.fromJson(data);
         setState(() {
           weatherDataList.add(weatherData);
         });
       } else {
-        // If the server did not return a 200 OK response, throw an exception.
         throw Exception('Failed to load weather data');
       }
     }
@@ -73,12 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
 class WeatherCard extends StatelessWidget {
   final WeatherData weatherData;
 
-  const WeatherCard({Key? key, required this.weatherData}) : super(key: key);
+  const WeatherCard({super.key, required this.weatherData});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: ListTile(
         title: Text(weatherData.cityName),
         subtitle: Column(
