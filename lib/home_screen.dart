@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'weather_data.dart';
+import 'individual_city_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.title}) : super(key: key);
@@ -17,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // Fetch weather data for major US cities
     fetchWeatherData();
   }
 
@@ -27,12 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
       Uri url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city,US&appid=$apiKey');
       final response = await http.get(url);
       if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON.
         Map<String, dynamic> data = jsonDecode(response.body);
         WeatherData weatherData = WeatherData.fromJson(data);
         setState(() {
           weatherDataList.add(weatherData);
         });
       } else {
+        // If the server did not return a 200 OK response, throw an exception.
         throw Exception('Failed to load weather data');
       }
     }
@@ -47,28 +52,23 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView.builder(
         itemCount: weatherDataList.length,
         itemBuilder: (context, index) {
-          return WeatherCard(weatherData: weatherDataList[index]);
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CityForecastScreen(cityName: weatherDataList[index].cityName),
+                ),
+              );
+            },
+            child: WeatherCard(weatherData: weatherDataList[index]),
+          );
         },
       ),
     );
   }
 }
 
-class WeatherData {
-  final String cityName;
-  final double temperature;
-  final String weatherDescription;
-
-  WeatherData({required this.cityName, required this.temperature, required this.weatherDescription});
-
-  factory WeatherData.fromJson(Map<String, dynamic> json) {
-    return WeatherData(
-      cityName: json['name'],
-      temperature: (json['main']['temp'] - 273.15) * 9 / 5 + 32,
-      weatherDescription: json['weather'][0]['description'],
-    );
-  }
-}
 
 class WeatherCard extends StatelessWidget {
   final WeatherData weatherData;
