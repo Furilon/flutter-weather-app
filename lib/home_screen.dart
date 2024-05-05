@@ -67,25 +67,4 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 
-class WeatherCard extends StatelessWidget {
-  final WeatherData weatherData;
 
-  const WeatherCard({super.key, required this.weatherData});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: ListTile(
-        title: Text(weatherData.cityName),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Temperature: ${weatherData.temperature.toStringAsFixed(1)}°F'),
-            Text('Weather: ${weatherData.weatherDescription}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
