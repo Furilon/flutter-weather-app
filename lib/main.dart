@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'auth/auth_gate.dart';
+import 'favorites_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,13 +17,53 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
+    return const MaterialApp(
+      title: 'Weather App Demo',
+      home: Main(),
+    );
+  }
+}
+
+class Main extends StatefulWidget {
+  const Main({super.key});
+
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = <Widget>[
+    const AuthGate(),
+    const FavoritesScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Weather App Demo")),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Favorites',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
-      home: const AuthGate(),
+      body: _pages[_selectedIndex],
     );
   }
 }
