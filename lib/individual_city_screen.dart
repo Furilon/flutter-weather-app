@@ -76,7 +76,7 @@ class _CityForecastScreenState extends State<CityForecastScreen> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             }
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),
