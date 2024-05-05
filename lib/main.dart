@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -32,7 +33,18 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+  User? _currentUser;
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      setState(() {
+        _currentUser = user;
+      });
+    });
+  }
 
   final List<Widget> _pages = <Widget>[
     const AuthGate(),
@@ -49,23 +61,23 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Weather App Demo")),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Favorites',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: _currentUser != null
+          ? BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.star),
+                  label: 'Favorites',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+            )
+          : null, // Hide the bottom navigation bar if user is not logged in
       body: _pages[_selectedIndex],
     );
   }
 }
-
-

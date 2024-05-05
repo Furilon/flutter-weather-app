@@ -26,7 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
     List<String> cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
     String apiKey = 'fd80244eb438a5e523f948e21723406f';
     for (String city in cities) {
-      Uri url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city,US&appid=$apiKey');
+      Uri url = Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?q=$city,US&appid=$apiKey'
+      );
       final response = await http.get(url);
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
