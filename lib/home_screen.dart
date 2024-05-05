@@ -17,7 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch weather data for major US cities
     fetchWeatherData();
   }
 
@@ -28,14 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
       Uri url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city,US&appid=$apiKey');
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON.
         Map<String, dynamic> data = jsonDecode(response.body);
         WeatherData weatherData = WeatherData.fromJson(data);
         setState(() {
           weatherDataList.add(weatherData);
         });
       } else {
-        // If the server did not return a 200 OK response, throw an exception.
         throw Exception('Failed to load weather data');
       }
     }
@@ -67,7 +64,7 @@ class WeatherData {
   factory WeatherData.fromJson(Map<String, dynamic> json) {
     return WeatherData(
       cityName: json['name'],
-      temperature: (json['main']['temp'] - 273.15) * 9 / 5 + 32, // Convert temperature from Kelvin to Fahrenheit
+      temperature: (json['main']['temp'] - 273.15) * 9 / 5 + 32,
       weatherDescription: json['weather'][0]['description'],
     );
   }
