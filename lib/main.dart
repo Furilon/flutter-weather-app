@@ -76,7 +76,7 @@ class _MainState extends State<Main> {
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,
             )
-          : null, // Hide the bottom navigation bar if user is not logged in
+          : null,
       body: _pages[_selectedIndex],
     );
   }

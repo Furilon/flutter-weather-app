@@ -72,18 +72,13 @@ class _CityForecastScreenState extends State<CityForecastScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<WeatherForecast> forecasts = snapshot.data!;
-              // Filter forecasts for today and upcoming days
               List<WeatherForecast> todayForecast = [forecasts.first];
               List<WeatherForecast> upcomingForecasts = forecasts.skip(1).toList();
               return Column(
                 children: [
-                  // Today's forecast section
                   _buildForecastSection('Today', todayForecast),
-                  // Divider between sections
-                  Divider(),
-                  // Upcoming days forecast section
+                  const Divider(),
                   _buildForecastSection('Upcoming Days', upcomingForecasts),
-                  // Add to Favorites button
                   ElevatedButton(
                     onPressed: addToFavorites,
                     child: const Text('Add to Favorites'),
@@ -109,7 +104,7 @@ class _CityForecastScreenState extends State<CityForecastScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -118,7 +113,7 @@ class _CityForecastScreenState extends State<CityForecastScreen> {
         // Forecasts
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: forecasts.length,
           itemBuilder: (context, index) {
             WeatherForecast forecast = forecasts[index];
